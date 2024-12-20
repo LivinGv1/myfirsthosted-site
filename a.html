@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reaction Time Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    .light { font-size: 100px; margin: 20px; }
+    .red { color: red; }
+    .green { color: green; }
+    button { padding: 10px 20px; font-size: 18px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Test Your Reaction Time</h1>
+  <p>Click "Start Test" to begin!</p>
+  <button id="startButton">Start Test</button>
+  <p id="result"></p>
+  <p id="light" class="light red">🟥</p>
+
+  <script>
+    let greenLightTime;
+    const lightElement = document.getElementById('light');
+    const resultElement = document.getElementById('result');
+    const startButton = document.getElementById('startButton');
+
+    startButton.addEventListener('click', () => {
+      // Disable start button
+      startButton.disabled = true;
+
+      // Reset light and result
+      lightElement.textContent = '🟥';
+      lightElement.classList.remove('green');
+      lightElement.classList.add('red');
+      resultElement.textContent = '';
+
+      // Set a random delay between 2 and 4 seconds
+      const delay = Math.random() * 2000 + 2000;
+
+      // After delay, change the light to green
+      setTimeout(() => {
+        lightElement.textContent = '🟩';
+        lightElement.classList.remove('red');
+        lightElement.classList.add('green');
+        greenLightTime = Date.now();  // Capture the time when light turns green
+      }, delay);
+    });
+
+    lightElement.addEventListener('click', () => {
+      if (lightElement.classList.contains('green')) {
+        // Calculate reaction time
+        const reactionTime = Date.now() - greenLightTime;
+        resultElement.textContent = `Your reaction time is ${reactionTime} ms`;
+        startButton.disabled = false;  // Enable the button for the next round
+        lightElement.textContent = '🟥';  // Reset light
+        lightElement.classList.remove('green');
+        lightElement.classList.add('red');
+      }
+    });
+  </script>
+</body>
+</html>
+    
